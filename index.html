@@ -59,17 +59,14 @@
         );
       }
 
-      const MainCard = ({ img, isCat2 }) => {
+      const MainCard = ({ img }) => {
         function handleHeartClick() {
           console.log("하트 눌렀음");
         }
         function handleMouseOver() {
           console.log("하트 지나감");
         }
-        if (isCat2) {
-          img =
-            "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
-        }
+
         return (
           <div className="main-card">
             <img src={img} alt="고양이" width="400" />
@@ -96,23 +93,26 @@
       };
 
       const App = () => {
+        const CAT1 =
+          "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
+        const CAT2 =
+          "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
+        const CAT3 =
+          "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
+        const [mainCat, setMainCat] = React.useState(CAT1);
+
         const [counter, setCounter] = React.useState(1);
-        console.log("카운터", counter);
-        const [isCat2, setCat2] = React.useState(false);
 
         function handleFormSubmit(event) {
           event.preventDefault();
           setCounter(counter + 1);
-          setCat2(true);
+          setMainCat(CAT2);
         }
         return (
           <div>
             <Title>{counter}번째 고양이 가라사대</Title>
             <Form handleFormSubmit={handleFormSubmit} />
-            <MainCard
-              img="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
-              isCat2={isCat2}
-            />
+            <MainCard img={mainCat} />
             <Favorites />
           </div>
         );
