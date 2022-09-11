@@ -60,18 +60,18 @@
         );
       }
 
-      const MainCard = ({ img, handleHeartClick }) => {
+      const MainCard = ({ img, onHeartClick }) => {
         return (
           <div className="main-card">
             <img src={img} alt="고양이" width="400" />
-            <button onClick={handleHeartClick}>🤍</button>
+            <button onClick={onHeartClick}>🤍</button>
           </div>
         );
       };
 
       const Title = (props) => <h1>{props.children}</h1>;
 
-      const Form = () => {
+      const Form = ({ updateMainCat }) => {
         const includesHangul = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i.test(text);
         const [value, setValue] = React.useState("");
         const [errorMessage, setErrorMessage] = React.useState("");
@@ -79,9 +79,8 @@
         function handleInputChange(e) {
           const userValue = e.target.value;
           setErrorMessage("");
-          if (includesHangul(userValue)) {
+          if (includesHangul(userValue))
             setErrorMessage("한글은 입력할 수 없습니다.");
-          }
 
           setValue(userValue.toUpperCase());
         }
@@ -89,8 +88,14 @@
         function handleFormSubmit(e) {
           e.preventDefault();
           setErrorMessage("");
-          if (value === "") setErrorMessage("빈 값으로 만들 수 없습니다.");
+
+          if (value === "") {
+            setErrorMessage("빈 값으로 만들 수 없습니다.");
+            return;
+          }
+          updateMainCat();
         }
+
         return (
           <form onSubmit={handleFormSubmit}>
             <input
@@ -119,27 +124,25 @@
           "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
         const CAT3 =
           "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
+
         const [mainCat, setMainCat] = React.useState(CAT1);
-
         const [counter, setCounter] = React.useState(1);
-
         const [favorites, setFavorites] = React.useState([CAT1, CAT2]);
 
-        function handleFormSubmit(event) {
-          event.preventDefault();
-          setCounter(counter + 1);
+        function updateMainCat(event) {
           setMainCat(CAT2);
+          setCounter(counter + 1);
         }
 
         function handleHeartClick() {
           setFavorites([...favorites, CAT3]);
         }
-
+        //props로 넘기는 함수는 on~~ 시작
         return (
           <div>
             <Title>{counter}번째 고양이 가라사대</Title>
-            <Form handleFormSubmit={handleFormSubmit} />
-            <MainCard img={mainCat} handleHeartClick={handleHeartClick} />
+            <Form updateMainCat={updateMainCat} />
+            <MainCard img={mainCat} onHeartClick={handleHeartClick} />
             <Favorites favorites={favorites} />
           </div>
         );
