@@ -56,6 +56,24 @@
         </ul>
       );
 
+      function sayHello(name) {
+        return "안녕 " + name;
+      }
+
+      console.log(sayHello("시온"));
+      function Card(title, desc) {
+        return (
+          <div>
+            <h2>{title}</h2>
+            <p>{desc}</p>
+          </div>
+        );
+      }
+
+      Card("리액트 짱", "리액트 입니다.");
+
+      <Card title="리액트 짱" desc="리액트 입니다" />
+
       const mainCard = (
         <div class="main-card">
           <img
