@@ -50,38 +50,21 @@
         );
       }
 
-      function Favorites() {
-        const CAT1 =
-          "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
-        const CAT2 =
-          "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
-        const CAT3 =
-          "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
-
-        const cats = [CAT1, CAT2, CAT3];
+      function Favorites({ favorites }) {
         return (
           <ul className="favorites">
-            {cats.map((cat) => (
-              <CatItem img={cat} key={cat} />
+            {favorites.map((favorite) => (
+              <CatItem img={favorite} key={favorite} />
             ))}
           </ul>
         );
       }
 
-      const MainCard = ({ img }) => {
-        function handleHeartClick() {
-          console.log("하트 눌렀음");
-        }
-        function handleMouseOver() {
-          console.log("하트 지나감");
-        }
-
+      const MainCard = ({ img, handleHeartClick }) => {
         return (
           <div className="main-card">
             <img src={img} alt="고양이" width="400" />
-            <button onClick={handleHeartClick} onMouseOver={handleMouseOver}>
-              🤍
-            </button>
+            <button onClick={handleHeartClick}>🤍</button>
           </div>
         );
       };
@@ -112,17 +95,24 @@
 
         const [counter, setCounter] = React.useState(1);
 
+        const [favorites, setFavorites] = React.useState([CAT1, CAT2]);
+
         function handleFormSubmit(event) {
           event.preventDefault();
           setCounter(counter + 1);
           setMainCat(CAT2);
         }
+
+        function handleHeartClick() {
+          setFavorites([...favorites, CAT3]);
+        }
+
         return (
           <div>
             <Title>{counter}번째 고양이 가라사대</Title>
             <Form handleFormSubmit={handleFormSubmit} />
-            <MainCard img={mainCat} />
-            <Favorites />
+            <MainCard img={mainCat} handleHeartClick={handleHeartClick} />
+            <Favorites favorites={favorites} />
           </div>
         );
       };
