@@ -37,8 +37,6 @@
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
     <script type="text/babel">
-      console.log("야옹");
-
       function CatItem({ img }) {
         return (
           <li>
@@ -61,12 +59,16 @@
         );
       }
 
-      const MainCard = ({ img }) => {
+      const MainCard = ({ img, isCat2 }) => {
         function handleHeartClick() {
           console.log("하트 눌렀음");
         }
         function handleMouseOver() {
           console.log("하트 지나감");
+        }
+        if (isCat2) {
+          img =
+            "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
         }
         return (
           <div className="main-card">
@@ -79,19 +81,8 @@
       };
 
       const Title = (props) => <h1>{props.children}</h1>;
-      const Form = () => {
-        const counterState = React.useState(1);
 
-        const counter = counterState[0];
-        const setCounter = counterState[1];
-
-        console.log("카운터", counter);
-
-        function handleFormSubmit(event) {
-          console.log("폼 전송됨");
-          event.preventDefault();
-          setCounter(counter + 1);
-        }
+      const Form = ({ handleFormSubmit }) => {
         return (
           <form onSubmit={handleFormSubmit}>
             <input
@@ -104,17 +95,31 @@
         );
       };
 
-      const app = (
-        <div>
-          <Title>1번째 고양이 가라사대</Title>
-          <Form />
-          <MainCard img="https://cataas.com/cat/60b73094e04e18001194a309/says/react" />
-          <Favorites />
-        </div>
-      );
+      const App = () => {
+        const [counter, setCounter] = React.useState(1);
+        console.log("카운터", counter);
+        const [isCat2, setCat2] = React.useState(false);
+
+        function handleFormSubmit(event) {
+          event.preventDefault();
+          setCounter(counter + 1);
+          setCat2(true);
+        }
+        return (
+          <div>
+            <Title>{counter}번째 고양이 가라사대</Title>
+            <Form handleFormSubmit={handleFormSubmit} />
+            <MainCard
+              img="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
+              isCat2={isCat2}
+            />
+            <Favorites />
+          </div>
+        );
+      };
 
       const 여기다가그려 = document.querySelector("#app");
-      ReactDOM.render(app, 여기다가그려);
+      ReactDOM.render(<App />, 여기다가그려);
     </script>
   </body>
 </html>
