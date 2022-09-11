@@ -42,50 +42,38 @@
     <script type="text/babel">
       console.log("야옹");
 
-      const catItem = (
-        <li>
-          <img src="https://cataas.com/cat/60b73094e04e18001194a309/says/react" />
-        </li>
-      );
-
-      const favorites = (
-        <ul class="favorites">
-          {catItem}
-          {catItem}
-          {catItem}
-        </ul>
-      );
-
-      function sayHello(name) {
-        return "안녕 " + name;
-      }
-
-      console.log(sayHello("시온"));
-      function Card(title, desc) {
+      function CatItem({ img }) {
         return (
-          <div>
-            <h2>{title}</h2>
-            <p>{desc}</p>
-          </div>
+          <li>
+            <img src={img} />
+          </li>
         );
       }
 
-      Card("리액트 짱", "리액트 입니다.");
+      function Favorites() {
+        return (
+          <ul class="favorites">
+            <CatItem img="https://cataas.com/cat/60b73094e04e18001194a309/says/react" />
+            <CatItem img="https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn" />
+            <CatItem />
+          </ul>
+        );
+      }
 
-      <Card title="리액트 짱" desc="리액트 입니다" />
+      const MainCard = () => {
+        return (
+          <div class="main-card">
+            <img
+              src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
+              alt="고양이"
+              width="400"
+            />
+            <button>🤍</button>
+          </div>
+        );
+      };
 
-      const mainCard = (
-        <div class="main-card">
-          <img
-            src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
-            alt="고양이"
-            width="400"
-          />
-          <button>🤍</button>
-        </div>
-      );
-
-      const title = <h1>1번째 고양이 가라사대</h1>;
+      const Title = (props) => <h1>{props.children}</h1>;
       const form = (
         <form>
           <input
@@ -99,10 +87,10 @@
 
       const app = (
         <div>
-          {title}
+          <Title>1번째 고양이 가라사대</Title>
           {form}
-          {mainCard}
-          {favorites}
+          <MainCard />
+          <Favorites />
         </div>
       );
 
