@@ -46,6 +46,15 @@
         },
       };
 
+      const fetchCat = async (text) => {
+        const OPEN_API_DOMAIN = "https://cataas.com";
+        const response = await fetch(
+          `${OPEN_API_DOMAIN}/cat/says/${text}?json=true`
+        );
+        const responseJson = await response.json();
+        return `${OPEN_API_DOMAIN}/${responseJson.url}`;
+      };
+
       function CatItem({ img }) {
         return (
           <li>
@@ -62,8 +71,8 @@
       function Favorites({ favorites }) {
         return (
           <ul className="favorites">
-            {favorites.map((favorite) => (
-              <CatItem img={favorite} key={favorite} />
+            {favorites.map((favorite, id) => (
+              <CatItem img={favorite} key={id} />
             ))}
           </ul>
         );
@@ -102,7 +111,7 @@
             setErrorMessage("빈 값으로 만들 수 없습니다.");
             return;
           }
-          updateMainCat();
+          updateMainCat(value);
         }
 
         return (
@@ -142,9 +151,12 @@
           jsonLocalStorage.getItem("favorites") || []
         );
 
-        function updateMainCat(event) {
+        async function updateMainCat(value) {
+          const newCat = await fetchCat(value);
+
           const nextCounter = counter + 1;
-          setMainCat(CAT2);
+          setMainCat(newCat);
+
           setCounter(nextCounter);
           jsonLocalStorage.setItem("counter", nextCounter);
         }
