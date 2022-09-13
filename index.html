@@ -73,6 +73,10 @@
 
       // 좋아요 누른 Item list
       function Favorites({ favorites }) {
+        if (favorites.length === 0) {
+          return <div>사진 위 하트를 눌러 고양이 사진을 저장해봐요!</div>;
+        }
+
         return (
           <ul className="favorites">
             {favorites.map((favorite, id) => (
@@ -83,11 +87,12 @@
       }
 
       // 메인 사진
-      const MainCard = ({ img, onHeartClick }) => {
+      const MainCard = ({ img, onHeartClick, alreadyFavorites }) => {
+        const heartIcon = alreadyFavorites ? "💖" : "🤍";
         return (
           <div className="main-card">
             <img src={img} alt="고양이" width="400" />
-            <button onClick={onHeartClick}>🤍</button>
+            <button onClick={onHeartClick}>{heartIcon}</button>
           </div>
         );
       };
@@ -152,11 +157,15 @@
 
         const [mainCat, setMainCat] = React.useState(CAT1);
         const [counter, setCounter] = React.useState(
-          jsonLocalStorage.getItem("counter") || 0
+          jsonLocalStorage.getItem("counter")
         );
+
         const [favorites, setFavorites] = React.useState(
           jsonLocalStorage.getItem("favorites") || []
         );
+
+        // 하트이미누름
+        const alreadyFavorites = favorites.includes(mainCat);
 
         // 첫 렌더링 시 이미지 세팅
         async function setInitialCat() {
@@ -197,9 +206,17 @@
         //props로 함수를 넘길 때 props명을 on~~로 시작
         return (
           <div>
-            <Title>{counter}번째 고양이 가라사대</Title>
+            {counter ? (
+              <Title>{counter}번째 고양이 가라사대</Title>
+            ) : (
+              <Title>고양이 가라사대</Title>
+            )}
             <Form updateMainCat={updateMainCat} />
-            <MainCard img={mainCat} onHeartClick={handleHeartClick} />
+            <MainCard
+              img={mainCat}
+              onHeartClick={handleHeartClick}
+              alreadyFavorites={alreadyFavorites}
+            />
             <Favorites favorites={favorites} />
           </div>
         );
