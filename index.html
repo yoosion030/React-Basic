@@ -24,6 +24,7 @@
     }
   </style>
   <body>
+    <!-- render 시킬 엘리먼트 -->
     <div id="app"></div>
 
     <script
@@ -37,6 +38,7 @@
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
     <script type="text/babel">
+      // localStorage에 세팅 및 저장
       const jsonLocalStorage = {
         setItem: (key, value) => {
           localStorage.setItem(key, JSON.stringify(value));
@@ -46,6 +48,7 @@
         },
       };
 
+      // 생성 버튼 누른 후 api 호출 함수
       const fetchCat = async (text) => {
         const OPEN_API_DOMAIN = "https://cataas.com";
         const response = await fetch(
@@ -68,6 +71,7 @@
         );
       }
 
+      // 좋아요 누른 Item list
       function Favorites({ favorites }) {
         return (
           <ul className="favorites">
@@ -78,6 +82,7 @@
         );
       }
 
+      // 메인 사진
       const MainCard = ({ img, onHeartClick }) => {
         return (
           <div className="main-card">
@@ -87,13 +92,12 @@
         );
       };
 
-      const Title = (props) => <h1>{props.children}</h1>;
-
       const Form = ({ updateMainCat }) => {
         const includesHangul = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i.test(text);
         const [value, setValue] = React.useState("");
         const [errorMessage, setErrorMessage] = React.useState("");
 
+        // input 예외처리
         function handleInputChange(e) {
           const userValue = e.target.value;
           setErrorMessage("");
@@ -103,6 +107,7 @@
           setValue(userValue.toUpperCase());
         }
 
+        // 생성 버튼 눌렀을 때 input 예외처리
         function handleFormSubmit(e) {
           e.preventDefault();
           setErrorMessage("");
@@ -135,6 +140,8 @@
         );
       };
 
+      const Title = (props) => <h1>{props.children}</h1>;
+
       const App = () => {
         const CAT1 =
           "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
@@ -151,16 +158,25 @@
           jsonLocalStorage.getItem("favorites") || []
         );
 
+        // 첫 렌더링 시 이미지 세팅
         async function setInitialCat() {
-          const newCat = await fetchCat("Firstcat");
+          const newCat = await fetchCat("First cat");
           setMainCat(newCat);
-          console.log(newCat);
         }
 
         React.useEffect(() => {
           setInitialCat();
         }, []);
 
+        React.useEffect(() => {
+          // App이 새로운 UI를 그릴 때 마다 실행
+          console.log("counter");
+        }, [counter]);
+
+        // App이 새로운 UI를 그릴 때 마다 실행
+        console.log("hello");
+
+        // 생성버튼 누르고 난 후 메인 사진 수정
         async function updateMainCat(value) {
           const newCat = await fetchCat(value);
 
@@ -171,11 +187,13 @@
           jsonLocalStorage.setItem("counter", nextCounter);
         }
 
+        // 하트버튼 눌렀을 때 함수
         function handleHeartClick() {
           const nextFavorites = [...favorites, mainCat];
           setFavorites(nextFavorites);
           jsonLocalStorage.setItem("favorites", nextFavorites);
         }
+
         //props로 함수를 넘길 때 props명을 on~~로 시작
         return (
           <div>
