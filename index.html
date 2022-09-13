@@ -106,8 +106,10 @@
         function handleInputChange(e) {
           const userValue = e.target.value;
           setErrorMessage("");
-          if (includesHangul(userValue))
+          if (includesHangul(userValue)) {
             setErrorMessage("한글은 입력할 수 없습니다.");
+            return;
+          }
 
           setValue(userValue.toUpperCase());
         }
@@ -156,14 +158,21 @@
           "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
 
         const [mainCat, setMainCat] = React.useState(CAT1);
-        const [counter, setCounter] = React.useState(
-          jsonLocalStorage.getItem("counter")
-        );
+        // const [counter, setCounter] = React.useState(
+        //   jsonLocalStorage.getItem("counter")
+        // );
 
-        const [favorites, setFavorites] = React.useState(
-          jsonLocalStorage.getItem("favorites") || []
-        );
+        const [counter, setCounter] = React.useState(() => {
+          return jsonLocalStorage.getItem("counter");
+        });
 
+        // const [favorites, setFavorites] = React.useState(
+        //   jsonLocalStorage.getItem("favorites") || []
+        // );
+
+        const [favorites, setFavorites] = React.useState(() => {
+          return jsonLocalStorage.getItem("favorites") || [];
+        });
         // 하트이미누름
         const alreadyFavorites = favorites.includes(mainCat);
 
@@ -192,8 +201,11 @@
           const nextCounter = counter + 1;
           setMainCat(newCat);
 
-          setCounter(nextCounter);
-          jsonLocalStorage.setItem("counter", nextCounter);
+          setCounter((prev) => {
+            const nextCounter = prev + 1;
+            jsonLocalStorage.setItem("counter", nextCounter);
+            return nextCounter;
+          });
         }
 
         // 하트버튼 눌렀을 때 함수
