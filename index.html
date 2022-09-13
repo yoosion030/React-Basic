@@ -203,14 +203,12 @@
           jsonLocalStorage.setItem("favorites", nextFavorites);
         }
 
+        const counterTitle = counter === null ? "" : counter + "번째 ";
+
         //props로 함수를 넘길 때 props명을 on~~로 시작
         return (
           <div>
-            {counter ? (
-              <Title>{counter}번째 고양이 가라사대</Title>
-            ) : (
-              <Title>고양이 가라사대</Title>
-            )}
+            <Title>{counterTitle}고양이 가라사대</Title>
             <Form updateMainCat={updateMainCat} />
             <MainCard
               img={mainCat}
